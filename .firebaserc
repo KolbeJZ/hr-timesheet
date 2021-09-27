@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "timesheet-app-59a49": {
+      "hosting": {
+        "hr-timesheet": [
+          "timesheet-app-59a49"
+        ]
+      }
+    }
+  }
+}
