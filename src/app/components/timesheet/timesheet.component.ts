@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormControl, ValidatorFn, AbstractControl } from '@angular/forms';
+
 import { DepartmentsService } from 'src/app/services/departments.service';
 import { Department } from 'src/app/interfaces/department';
 import { Employee } from 'src/app/interfaces/employee';
-import { FormControl, ValidatorFn, AbstractControl } from '@angular/forms';
 import { EmployeeService } from '../../services/employee.service';
 
 @Component({
@@ -11,15 +12,15 @@ import { EmployeeService } from '../../services/employee.service';
   templateUrl: './timesheet.component.html',
   styleUrls: ['./timesheet.component.scss']
 })
+
 export class TimesheetComponent implements OnInit {
-  departments: Department[];
-  department: Department;
+  departments: Department[] = [];
+  department: any;
   employeeNameFC = new FormControl('', this.nameValidator());
   employees: Employee[] = [];
   employeeId = 0;
   weekdays: string[] = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-
-
+  
   constructor(
     private route: ActivatedRoute,
     private departmentsService: DepartmentsService,
@@ -32,65 +33,61 @@ export class TimesheetComponent implements OnInit {
     this.department = this.departments.find(department => department.id === this.route.snapshot.params['id']);
     this.employeeService.getEmployeeHoursByDepartment(this.department.id).subscribe(employees => {
       this.employees = employees;
-  });
-  
-}
-
-addEmployee(): void {
-  if (this.employeeNameFC.value) {
-      this.employeeId++;
-
-      this.employees.push({
-          // id: this.employeeId.toString(),
-          departmentId: this.department.id,
-          name: this.employeeNameFC.value,
-          payRate: Math.floor(Math.random() * 50) + 50,
-          monday: 0,
-          tuesday: 0,
-          wednesday: 0,
-          thursday: 0,
-          friday: 0,
-          saturday: 0,
-          sunday: 0
-      });
-
-      this.employeeNameFC.setValue('');
+    });
   }
-}
 
-nameValidator(): ValidatorFn {
-  return (control: AbstractControl): { [key: string]: any } | null => {
+  addEmployee(): void {
+    if (this.employeeNameFC.value) {
+      this.employeeId++;
+      this.employees.push({
+        // id: this.employeeId.toString(),
+        departmentId: this.department.id,
+        name: this.employeeNameFC.value,
+        payRate: Math.floor(Math.random() * 50) + 50,
+        monday: 0,
+        tuesday: 0,
+        wednesday: 0,
+        thursday: 0,
+        friday: 0,
+        saturday: 0,
+        sunday: 0
+      });
+      this.employeeNameFC.setValue('');
+    }
+  }
+
+  nameValidator(): ValidatorFn {
+    return (control: AbstractControl): {[key: string]: any} | null => {
       let error = null;
-      if (this.employees && this.employees.length) {
-          this.employees.forEach(employee => {
-              if (employee.name.toLowerCase() === control.value.toLowerCase()) {
-                  error = {duplicate: true};
-              }
-          });
+      if ( this.employees && this.employees.length ) {
+        this.employees.forEach( employee => {
+          if ( employee.name.toLowerCase() === control.value.toLowerCase() ) {
+            error = {duplicate: true};
+          }
+        });
       }
       return error;
-  };
-}
+    };
+  }
 
-getTotalHours(employee: Employee): number {
-  return employee.monday + employee.tuesday + employee.wednesday
-      + employee.thursday + employee.friday + employee.saturday + employee.sunday;
-}
+  getTotalHours(employee: Employee): number {
+    let totalHours: number = employee.sunday + employee.monday + employee.tuesday + employee.wednesday + employee.thursday + employee.friday + employee.saturday;
+    return totalHours;
+  }
 
-deleteEmployee(index: number): void {
-  this.employees.splice(index, 1);
-}
+  deleteEmployee(employee: Employee, index: number): void {
+    if (employee.id) {
+        this.employeeService.deleteEmployeeHours(employee);
+    }
+    this.employees.splice(index, 1);
+  }
 
-submit(): void {
-  this.employees.forEach(employee => {
-      this.employeeService.updateEmployeeHours(employee);
-  });
-
-  this.router.navigate(['./departments']);
-}
-
-
-
-
+  submit(): void {
+    this.employees.forEach( employee => {
+      if (employee.id) { this.employeeService.updateEmployeeHours(employee) }
+      else { this.employeeService.saveEmployeeHours(employee) }
+    });
+    this.router.navigate(['./departments']);
+  }
 
 }

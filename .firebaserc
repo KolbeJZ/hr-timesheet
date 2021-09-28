@@ -1,9 +1,9 @@
 {
   "targets": {
-    "timesheet-app-59a49": {
+    "timesheet-hr": {
       "hosting": {
         "hr-timesheet": [
-          "timesheet-app-59a49"
+          "timesheet-hr"
         ]
       }
     }

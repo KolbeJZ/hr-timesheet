@@ -7,13 +7,13 @@
 export const environment = {
   production: false,
 firebase: {
-  apiKey: "AIzaSyCdATQEUzND7j0uCmW2EGd0SVrgYCjR5qI",
-  authDomain: "timesheet-app-59a49.firebaseapp.com",
-  projectId: "timesheet-app-59a49",
-  storageBucket: "timesheet-app-59a49.appspot.com",
-  messagingSenderId: "490228559074",
-  appId: "1:490228559074:web:a1a9f1dcd7609761e982bb",
-  measurementId: "G-EJZB41M5M4"
+  apiKey: "AIzaSyDmd8OB86E0jRIi29_lK6cjE9nWv3deCPY",
+  authDomain: "timesheet-hr.firebaseapp.com",
+  projectId: "timesheet-hr",
+  storageBucket: "timesheet-hr.appspot.com",
+  messagingSenderId: "376021592340",
+  appId: "1:376021592340:web:7b10de20ce298a8239ba01",
+  measurementId: "G-KF1ZRD0PTD"
   }
 };
 

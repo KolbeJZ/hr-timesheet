@@ -21,7 +21,7 @@ getEmployeeHoursByDepartment(departmentId: string): Observable<Employee[]> {
       map((items: DocumentChangeAction<Employee>[]): Employee[] => {
           return items.map((item: DocumentChangeAction<Employee>): Employee => {
               return {
-                  id: item.payload.doc['id'],
+                  id: item.payload.doc.id,
                   departmentId,
                   name: item.payload.doc.data().name,
                   payRate: item.payload.doc.data().payRate,

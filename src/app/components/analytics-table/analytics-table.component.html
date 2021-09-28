@@ -13,7 +13,7 @@
                 <td>{{employee.name}}</td>
                 <td *ngFor="let day of weekdays">{{employee[day] | number:'1.2-2'}}</td>
                 <td class="total-cell">{{getTotalHours(employee) | number:'1.2-2'}}</td>
-                <td>{{employee.payRate | currency}}/hr</td>
+                <td>{{employee.payRate | currency}}&#47;hr</td>
                 <td>{{employee.payRate * getTotalHours(employee) | currency}}</td>
             </tr>
         </tbody>
